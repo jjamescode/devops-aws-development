@@ -5,5 +5,8 @@ We are using git branches to track changes
 - AWS
 - Terraform
 - ECR
-- Docker Compose
+- Docker 
 - Git
+- AWS: VPC
+- AWS - Security Groups
+- and much more.
