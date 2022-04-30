@@ -14,6 +14,9 @@ variable "aws_region" {
   default = "us-east-1"
 }
 
+#data "aws_availability_zones" "available" {}
+#aws_avail_zones="${slice(data.aws_availability_zones.available.names,0,2)}"
+
 variable "vpc_cidr" {
   default = "172.20.0.0/20"
 }

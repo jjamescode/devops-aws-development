@@ -80,7 +80,6 @@ resource "aws_route_table_association" "aws-private-route-table-association" {
   route_table_id = aws_route_table.aws-private-route-table[count.index].id
 }
 
-
 # Subnets : public-web
 resource "aws_subnet" "aws-public-subnet" {
   count                   = length(var.pub_web_subnets_cidr)
