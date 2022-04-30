@@ -9,27 +9,28 @@ data "aws_ami" "amazon_linux_private" {
 }
 
 # Creates Private server
-resource "aws_instance" "task1_private_ec2" {
+resource "aws_instance" "aws-private-ec2" {
   count         = length(var.priv_app_subnets_cidr)
   ami           = data.aws_ami.amazon_linux_private.id
   instance_type = "t2.micro"
   key_name      = var.bastion_key_name
-  subnet_id     = aws_subnet.task1_private_app[count.index].id
+  subnet_id     = aws_subnet.aws-private-subnet[count.index].id
 
   vpc_security_group_ids = [
-    aws_security_group.task1_private_ec2_sg.id
+    aws_security_group.aws-private-sg.id
   ]
 
   tags = {
-    Name = "task1_private_ec2-${count.index + 1}"
+    Name = "${var.application_name}-private-ec2-${count.index + 1}"
+    Env  = var.application_env
   }
 }
 
 # Private Security Group
-resource "aws_security_group" "task1_private_ec2_sg" {
+resource "aws_security_group" "aws-private-sg" {
   description = "Access for inbound"
-  name        = "task1_private_ec2_sg"
-  vpc_id      = aws_vpc.task1_vpc.id
+  name        = "aws-private-sg"
+  vpc_id      = aws_vpc.aws-vpc.id
 
   ingress {
     protocol    = "tcp"
@@ -54,6 +55,6 @@ resource "aws_security_group" "task1_private_ec2_sg" {
 
 
   tags = {
-    Name = "task1_private_ec2_sg"
+    Name = "aws-private-sg"
   }
 }

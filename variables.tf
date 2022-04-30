@@ -1,3 +1,15 @@
+variable "application_name" {
+  type        = string
+  description = "Application Name"
+  default     = "task1"
+}
+
+variable "application_env" {
+  type        = string
+  description = "Application Environment"
+  default     = "dev"
+}
+
 variable "aws_region" {
   default = "us-east-1"
 }

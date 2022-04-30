@@ -8,28 +8,29 @@ data "aws_ami" "amazon_linux" {
   owners = ["amazon"]
 }
 
-# Creates server
-resource "aws_instance" "task1_public_bastion" {
+# Creates Public Web server
+resource "aws_instance" "aws-web-server" {
   count         = length(var.pub_web_subnets_cidr)
   ami           = data.aws_ami.amazon_linux.id
   instance_type = "t2.micro"
   key_name      = var.bastion_key_name
-  subnet_id     = aws_subnet.task1_public_web[count.index].id
+  subnet_id     = aws_subnet.aws-public-subnet[count.index].id
 
   vpc_security_group_ids = [
-    aws_security_group.task1_bastion.id
+    aws_security_group.aws-web-sg.id
   ]
 
   tags = {
-    Name = "task1_bastion-${count.index + 1}"
+    Name = "${var.application_name}-${var.application_env}-web-server"
+    Env  = var.application_env
   }
 }
 
 # Public Security Group
-resource "aws_security_group" "task1_bastion" {
+resource "aws_security_group" "aws-web-sg" {
   description = "Access for inbound/outbound"
-  name        = "task1_bastion_security_group"
-  vpc_id      = aws_vpc.task1_vpc.id
+  name        = "aws-web-sg"
+  vpc_id      = aws_vpc.aws-vpc.id
 
   ingress {
     protocol    = "tcp"
@@ -68,6 +69,6 @@ resource "aws_security_group" "task1_bastion" {
   }
 
   tags = {
-    Name = "task1_bastion_security"
+    Name = "${var.application_name}-aws-web-sg"
   }
 }
