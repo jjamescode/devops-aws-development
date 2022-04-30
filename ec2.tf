@@ -57,4 +57,3 @@ resource "aws_security_group" "task1_private_ec2_sg" {
     Name = "task1_private_ec2_sg"
   }
 }
-

@@ -71,4 +71,3 @@ resource "aws_security_group" "task1_bastion" {
     Name = "task1_bastion_security"
   }
 }
-

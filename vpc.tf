@@ -15,8 +15,6 @@ resource "aws_internet_gateway" "task1_igw" {
   }
 }
 
-########
-
 # EIP for Public Nat Gateway
 resource "aws_eip" "task1_eip_public_nat_gateway" {
   vpc   = true
@@ -25,7 +23,7 @@ resource "aws_eip" "task1_eip_public_nat_gateway" {
     Name = "task1_eip_public_nat_gateway-${count.index + 1}"
   }
 }
-#######
+
 # Nat Gateway for Public AZ1 & AZ2
 resource "aws_nat_gateway" "task1_public_nat_gateway" {
   count         = length(var.pub_web_subnets_cidr)
@@ -74,14 +72,12 @@ resource "aws_route_table" "task1_private_route_table" {
   }
 }
 
-
 # PRIVATE Route table with associated PRIVATE subnets
 resource "aws_route_table_association" "task1_private_route_table_association" {
   count          = length(var.priv_app_subnets_cidr)
   subnet_id      = aws_subnet.task1_private_app[count.index].id
   route_table_id = aws_route_table.task1_private_route_table[count.index].id
 }
-
 
 # Subnets : public-web
 resource "aws_subnet" "task1_public_web" {
@@ -106,4 +102,3 @@ resource "aws_subnet" "task1_private_app" {
     Name = "task1_private_app_subnet-${count.index + 1}"
   }
 }
-
