@@ -10,7 +10,9 @@ data "aws_ami" "amazon_linux_private" {
 
 # Creates Private server
 resource "aws_instance" "aws-private-ec2" {
+  
   count         = length(var.priv_app_subnets_cidr)
+  
   ami           = data.aws_ami.amazon_linux_private.id
   instance_type = "t2.micro"
   key_name      = var.bastion_key_name
