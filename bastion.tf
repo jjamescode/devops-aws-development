@@ -23,7 +23,7 @@ resource "aws_instance" "aws-web-server" {
   ]
 
   tags = {
-    Name = "${var.application_name}-${var.application_env}-web-server"
+    Name = "${var.application_name}-${var.application_env}-web-server-${count.index + 1}"
     Env  = var.application_env
   }
 }
@@ -38,7 +38,7 @@ resource "aws_security_group" "aws-web-sg" {
     protocol    = "tcp"
     from_port   = 22
     to_port     = 22
-    cidr_blocks = ["10.0.0.0/8"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
@@ -54,6 +54,7 @@ resource "aws_security_group" "aws-web-sg" {
     to_port     = 80
     cidr_blocks = ["0.0.0.0/0"]
   }
+
 
   egress {
     protocol = "-1"
