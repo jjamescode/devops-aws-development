@@ -10,9 +10,9 @@ data "aws_ami" "amazon_linux" {
 
 # Creates Public Web server
 resource "aws_instance" "aws-web-server" {
-  
-  count         = length(var.pub_web_subnets_cidr)
-  
+
+  count = length(var.pub_web_subnets_cidr)
+
   ami           = data.aws_ami.amazon_linux.id
   instance_type = "t2.micro"
   key_name      = var.bastion_key_name
@@ -57,7 +57,7 @@ resource "aws_security_group" "aws-web-sg" {
 
 
   egress {
-    protocol = "-1"
+    protocol    = "-1"
     from_port   = 0
     to_port     = 0
     cidr_blocks = ["0.0.0.0/0"]

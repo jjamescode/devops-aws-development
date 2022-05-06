@@ -10,9 +10,9 @@ data "aws_ami" "amazon_linux_private" {
 
 # Creates Private server
 resource "aws_instance" "aws-private-ec2" {
-  
-  count         = length(var.priv_app_subnets_cidr)
-  
+
+  count = length(var.priv_app_subnets_cidr)
+
   ami           = data.aws_ami.amazon_linux_private.id
   instance_type = "t2.micro"
   key_name      = var.bastion_key_name
@@ -48,7 +48,7 @@ resource "aws_security_group" "aws-private-sg" {
   }
 
   egress {
-    protocol = "-1"
+    protocol    = "-1"
     from_port   = 0
     to_port     = 0
     cidr_blocks = ["0.0.0.0/0"]

@@ -18,10 +18,10 @@ resource "aws_internet_gateway" "aws-igw" {
 
 # EIP for Public Nat Gateway
 resource "aws_eip" "aws-web-eip" {
-  vpc   = true
-  
+  vpc = true
+
   count = length(var.pub_web_subnets_cidr)
-  
+
   tags = {
     Name = "${var.application_name}-web-eip-${count.index + 1}"
   }
@@ -29,9 +29,9 @@ resource "aws_eip" "aws-web-eip" {
 
 # Nat Gateway for Public AZ1 & AZ2
 resource "aws_nat_gateway" "aws-web-nat-gateway" {
-  
-  count         = length(var.pub_web_subnets_cidr)
-  
+
+  count = length(var.pub_web_subnets_cidr)
+
   subnet_id     = aws_subnet.aws-public-subnet[count.index].id
   allocation_id = aws_eip.aws-web-eip[count.index].id
   tags = {
@@ -41,9 +41,9 @@ resource "aws_nat_gateway" "aws-web-nat-gateway" {
 
 # Public Route Table
 resource "aws_route_table" "aws-public-route-table" {
-  
-  count  = length(var.pub_web_subnets_cidr)
-  
+
+  count = length(var.pub_web_subnets_cidr)
+
   vpc_id = aws_vpc.aws-vpc.id
 
   route {
@@ -58,9 +58,9 @@ resource "aws_route_table" "aws-public-route-table" {
 
 # Public Route table with associated public subnets
 resource "aws_route_table_association" "aws-web-route-table-association" {
-  
-  count          = length(var.pub_web_subnets_cidr)
-  
+
+  count = length(var.pub_web_subnets_cidr)
+
   subnet_id      = aws_subnet.aws-public-subnet[count.index].id
   route_table_id = aws_route_table.aws-public-route-table[count.index].id
 
@@ -68,9 +68,9 @@ resource "aws_route_table_association" "aws-web-route-table-association" {
 
 # PRIVATE Route table with associated PRIVATE subnets
 resource "aws_route_table" "aws-private-route-table" {
-  
-  count  = length(var.priv_app_subnets_cidr)
-  
+
+  count = length(var.priv_app_subnets_cidr)
+
   vpc_id = aws_vpc.aws-vpc.id
 
   route {
@@ -85,18 +85,18 @@ resource "aws_route_table" "aws-private-route-table" {
 
 # PRIVATE Route table with associated PRIVATE subnets
 resource "aws_route_table_association" "aws-private-route-table-association" {
-  
-  count          = length(var.priv_app_subnets_cidr)
-  
+
+  count = length(var.priv_app_subnets_cidr)
+
   subnet_id      = aws_subnet.aws-private-subnet[count.index].id
   route_table_id = aws_route_table.aws-private-route-table[count.index].id
 }
 
 # Subnets : public-web
 resource "aws_subnet" "aws-public-subnet" {
-  
-  count                   = length(var.pub_web_subnets_cidr)
-  
+
+  count = length(var.pub_web_subnets_cidr)
+
   vpc_id                  = aws_vpc.aws-vpc.id
   cidr_block              = element(var.pub_web_subnets_cidr, count.index)
   availability_zone       = element(var.azs, count.index)
@@ -108,9 +108,9 @@ resource "aws_subnet" "aws-public-subnet" {
 
 # Subnets : private-subnet
 resource "aws_subnet" "aws-private-subnet" {
-  
-  count                   = length(var.priv_app_subnets_cidr)
-  
+
+  count = length(var.priv_app_subnets_cidr)
+
   vpc_id                  = aws_vpc.aws-vpc.id
   cidr_block              = element(var.priv_app_subnets_cidr, count.index)
   availability_zone       = element(var.azs, count.index)
