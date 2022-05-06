@@ -28,6 +28,10 @@ resource "aws_instance" "aws-private-ec2" {
   }
   #Userdata stalls webserver on Public EC2
   user_data = file("script.sh")
+
+  depends_on = [
+    aws_nat_gateway.aws-web-nat-gateway
+  ]
 }
 
 # Private Security Group
@@ -40,7 +44,7 @@ resource "aws_security_group" "aws-private-sg" {
     protocol    = "tcp"
     from_port   = 22
     to_port     = 22
-    cidr_blocks = ["10.0.0.0/8"]
+    cidr_blocks = [var.vpc_cidr]
   }
 
   egress {

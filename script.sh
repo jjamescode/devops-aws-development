@@ -1,5 +1,6 @@
 #!/bin/bash
+sleep 120
 yum update -y
-yum install -y httpd.x86_64
-systemctl install httpd.service
-systemctl enable httpd.service 
+yum install -y httpd
+systemctl start httpd
+systemctl enable httpd 
