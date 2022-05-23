@@ -10,3 +10,5 @@ We are using git branches to track changes
 - AWS: VPC
 - AWS - Security Groups
 - and much more.
+
+<img src="https://jjamescode.github.io/images/vpn1-all.drawio.png" alt="VPC Layout" />
