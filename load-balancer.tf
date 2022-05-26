@@ -1,13 +1,13 @@
 #Create AWS ALB
 resource "aws_lb" "app1" {
-  name               = "${var.application_name}-main"
+  name               = "${var.application_name}-lb-app1"
   load_balancer_type = "application"
   subnets = [
     aws_subnet.aws-public-subnet[0].id,
     aws_subnet.aws-public-subnet[1].id
   ]
 
-  security_groups = [aws_security_group.lb.id]
+  security_groups = [aws_security_group.lb-sg.id]
 
   tags = local.common_tags
 
@@ -15,7 +15,7 @@ resource "aws_lb" "app1" {
 
 # App1 Target Group = TG Index = 0  
 resource "aws_lb_target_group" "app1" {
-  name        = "${var.application_name}-app1"
+  name        = "${var.application_name}-lb-target-group"
   protocol    = "HTTP"
   vpc_id      = aws_vpc.aws-vpc.id
   target_type = "ip"
@@ -25,6 +25,14 @@ resource "aws_lb_target_group" "app1" {
     path = "/app1/index.html"
   }
 
+}
+
+# App1 Target Group - Targets Register Instance      
+resource "aws_lb_target_group_attachment" "app1" {
+  count = length(var.pub_web_subnets_cidr)
+  target_group_arn = aws_lb_target_group.app1.arn
+  target_id = aws_instance.aws-web-server[count.index].id
+  port = 80
 }
 
 #Listeners
@@ -40,7 +48,7 @@ resource "aws_lb_listener" "app1" {
 }
 
 #ALB Security Group
-resource "aws_security_group" "lb" {
+resource "aws_security_group" "lb-sg" {
   name        = "${var.application_name}-lb-sg"
   description = "Allow access to ALB"
   vpc_id      = aws_vpc.aws-vpc.id
@@ -58,16 +66,17 @@ resource "aws_security_group" "lb" {
     to_port     = 8000
     cidr_blocks = ["0.0.0.0/0"]
   }
-}
+ /*  tags = "${merge(
+  local.common_tags, 
+  map(
+    "Name", "${local.prefix"-lb-sg"
+  )
+)}" */
+  
 
-# App1 Target Group - Targets Register Instance      
-resource "aws_lb_target_group_attachment" "app1" {
-  count            = length(var.priv_app_subnets_cidr)
-  target_group_arn = aws_lb_target_group.app1.arn
-  target_id        = aws_instance.aws-private-ec2[count.index].id
-  port             = 80
+tags = merge(
+  local.common_tags, 
+  {
+    "Name" = "${var.application_name}-lb-sg"
+  })
 }
-
-#tags = merge(
-#  local.common_tags,
-#  map("Name", "${local.prefix"-lb")
