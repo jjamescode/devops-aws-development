@@ -26,6 +26,12 @@ resource "aws_instance" "aws-web-server" {
     Name = "${var.application_name}-${var.application_env}-web-server-${count.index + 1}"
     Env  = var.application_env
   }
+  #Userdata stalls webserver on Public EC2
+  user_data = file("script.sh")
+
+  depends_on = [
+    aws_nat_gateway.aws-web-nat-gateway
+  ]
 }
 
 # Public Security Group
@@ -62,6 +68,16 @@ resource "aws_security_group" "aws-web-sg" {
     to_port     = 0
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  /* ingress { 
+    protocol    = "-1"
+    from_port   = 0
+    to_port     = 0
+    cidr_blocks = ["0.0.0.0/0"]
+    #security_group_id = sgr-03f6c72a0990d1fad
+    #security_group_id = sg-08a3f3b1deda230c2 / app1-lb-sg
+  }
+*/
 
   tags = {
     Name = "${var.application_name}-aws-web-sg"

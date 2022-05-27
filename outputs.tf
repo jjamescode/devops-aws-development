@@ -3,9 +3,9 @@
 } */
 
 
-output "app1_endpoint" {
+/* output "app1_endpoint" {
   value = aws_lb.app1.dns_name
-}
+} */
 
 /* output "lb_arn" {
   description = "The ID and ARN of the load balancer we created."

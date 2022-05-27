@@ -1,4 +1,4 @@
-#Create AWS ALB
+/* #Create AWS ALB 
 resource "aws_lb" "app1" {
   name               = "${var.application_name}-lb-app1"
   load_balancer_type = "application"
@@ -18,13 +18,18 @@ resource "aws_lb_target_group" "app1" {
   name        = "${var.application_name}-lb-target-group"
   protocol    = "HTTP"
   vpc_id      = aws_vpc.aws-vpc.id
-  target_type = "ip"
-  port        = 8000
-
+  #target_type = "ip"
+  port        = 80
+  
   health_check {
-    path = "/app1/index.html"
+    path = "/"
+    port = 8000
+    protocol = "HTTP"
   }
-
+  lifecycle {
+    create_before_destroy = true
+    ignore_changes        = [name]
+  }
 }
 
 # App1 Target Group - Targets Register Instance      
@@ -71,7 +76,7 @@ resource "aws_security_group" "lb-sg" {
   map(
     "Name", "${local.prefix"-lb-sg"
   )
-)}" */
+)}"
   
 
 tags = merge(
@@ -80,3 +85,4 @@ tags = merge(
     "Name" = "${var.application_name}-lb-sg"
   })
 }
+*/

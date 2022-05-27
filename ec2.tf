@@ -26,12 +26,6 @@ resource "aws_instance" "aws-private-ec2" {
     Name = "${var.application_name}-private-ec2-${count.index + 1}"
     Env  = var.application_env
   }
-  #Userdata stalls webserver on Public EC2
-  user_data = file("script.sh")
-
-  depends_on = [
-    aws_nat_gateway.aws-web-nat-gateway
-  ]
 }
 
 # Private Security Group
