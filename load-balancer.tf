@@ -65,6 +65,13 @@ resource "aws_security_group" "lb-sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  egress {
+    protocol    = "tcp"
+    from_port   = 80
+    to_port     = 80
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   tags = "${merge(
   local.common_tags, 
   map(
