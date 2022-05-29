@@ -23,7 +23,7 @@ resource "aws_lb_target_group" "app1" {
   
   health_check {
     path = "/"
-    port = 8000
+    port = 80
     protocol = "HTTP"
   }
   lifecycle {
