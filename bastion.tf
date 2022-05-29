@@ -9,25 +9,20 @@ data "aws_ami" "amazon_linux" {
 }
 
 # Creates Public Web server
-resource "aws_instance" "aws-web-server" {
-
-  count = length(var.pub_web_subnets_cidr)
-
+resource "aws_instance" "bastion" {
   ami           = data.aws_ami.amazon_linux.id
   instance_type = "t2.micro"
   key_name      = var.bastion_key_name
-  subnet_id     = aws_subnet.aws-public-subnet[count.index].id
+  subnet_id     = aws_subnet.aws-public-subnet[0].id
 
   vpc_security_group_ids = [
     aws_security_group.aws-web-sg.id
   ]
 
   tags = {
-    Name = "${var.application_name}-${var.application_env}-web-server-${count.index + 1}"
+    Name = "${var.application_name}-${var.application_env}-bastion"
     Env  = var.application_env
   }
-  #Userdata stalls webserver on Public EC2
-  user_data = file("script.sh")
 
   depends_on = [
     aws_nat_gateway.aws-web-nat-gateway
