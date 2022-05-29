@@ -1,4 +1,4 @@
-/* #Create AWS ALB 
+#Create AWS ALB 
 resource "aws_lb" "app1" {
   name               = "${var.application_name}-lb-app1"
   load_balancer_type = "application"
@@ -71,18 +71,10 @@ resource "aws_security_group" "lb-sg" {
     to_port     = 8000
     cidr_blocks = ["0.0.0.0/0"]
   }
- /*  tags = "${merge(
+  tags = "${merge(
   local.common_tags, 
   map(
-    "Name", "${local.prefix"-lb-sg"
+    "Name", "${local.prefix}-lb-sg"
   )
 )}"
-  
-
-tags = merge(
-  local.common_tags, 
-  {
-    "Name" = "${var.application_name}-lb-sg"
-  })
 }
-*/
