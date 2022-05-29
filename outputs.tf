@@ -1,5 +1,5 @@
 /* output "bastion_host" {
-  value = aws_instance.aws-web-server[count.index].public_dns
+  value = aws_instance.bastion[count.index].public_dns
 } */
 
 

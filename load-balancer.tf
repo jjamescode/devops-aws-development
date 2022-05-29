@@ -36,7 +36,7 @@ resource "aws_lb_target_group" "app1" {
 resource "aws_lb_target_group_attachment" "app1" {
   count = length(var.pub_web_subnets_cidr)
   target_group_arn = aws_lb_target_group.app1.arn
-  target_id = aws_instance.aws-web-server[count.index].id
+  target_id = aws_instance.aws-private-ec2[count.index].id
   port = 80
 }
 
