@@ -1,4 +1,4 @@
-/* #Create AWS ALB 
+#Create AWS ALB 
 resource "aws_lb" "app1" {
   name               = "${var.application_name}-lb-app1"
   load_balancer_type = "application"
@@ -23,7 +23,7 @@ resource "aws_lb_target_group" "app1" {
   
   health_check {
     path = "/"
-    port = 8000
+    port = 80
     protocol = "HTTP"
   }
   lifecycle {
@@ -36,7 +36,7 @@ resource "aws_lb_target_group" "app1" {
 resource "aws_lb_target_group_attachment" "app1" {
   count = length(var.pub_web_subnets_cidr)
   target_group_arn = aws_lb_target_group.app1.arn
-  target_id = aws_instance.aws-web-server[count.index].id
+  target_id = aws_instance.aws-private-ec2[count.index].id
   port = 80
 }
 
@@ -67,22 +67,15 @@ resource "aws_security_group" "lb-sg" {
 
   egress {
     protocol    = "tcp"
-    from_port   = 8000
-    to_port     = 8000
+    from_port   = 80
+    to_port     = 80
     cidr_blocks = ["0.0.0.0/0"]
   }
- /*  tags = "${merge(
+
+  tags = "${merge(
   local.common_tags, 
   map(
-    "Name", "${local.prefix"-lb-sg"
+    "Name", "${local.prefix}-lb-sg"
   )
 )}"
-  
-
-tags = merge(
-  local.common_tags, 
-  {
-    "Name" = "${var.application_name}-lb-sg"
-  })
 }
-*/
