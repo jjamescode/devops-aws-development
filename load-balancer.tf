@@ -72,10 +72,19 @@ resource "aws_security_group" "lb-sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = "${merge(
+/*   tags = "${merge(
   local.common_tags, 
-  map(
+  tomap(
     "Name", "${local.prefix}-lb-sg"
   )
-)}"
+)}" */
+
+tags = merge(
+  local.common_tags, 
+  {
+    Name = "${local.prefix}-lb-sg"
+    },
+  )
+
 }
+
