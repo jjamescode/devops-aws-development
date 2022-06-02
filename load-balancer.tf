@@ -66,18 +66,11 @@ resource "aws_security_group" "lb-sg" {
   }
 
   egress {
-    protocol    = "tcp"
-    from_port   = 80
-    to_port     = 80
+    protocol    = "-1"
+    from_port   = 0
+    to_port     = 0
     cidr_blocks = ["0.0.0.0/0"]
   }
-
-  /*   tags = "${merge(
-  local.common_tags, 
-  tomap(
-    "Name", "${local.prefix}-lb-sg"
-  )
-)}" */
 
   tags = merge(
     local.common_tags,
