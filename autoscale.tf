@@ -16,13 +16,10 @@ resource "aws_launch_configuration" "custom-launch-config" {
 resource "aws_autoscaling_group" "custom-group-autoscaling" {
   availability_zones = ["us-east-1a"]
   name = "custom-group-autoscaling"
-# We want this to explicitly depend on the launch config above
-  depends_on = [aws_launch_configuration.custom-launch-config]
   launch_configuration      = aws_launch_configuration.custom-launch-config.name
   min_size                  = 2
   max_size                  = 2
   health_check_grace_period = 100
-  health_check_type         = "ELB"
   target_group_arns            = ["${aws_lb_target_group.app1.arn}"]
   force_delete              = true
 
@@ -38,14 +35,14 @@ resource "aws_autoscaling_group" "custom-group-autoscaling" {
   }
 }
 
-resource "aws_autoscaling_attachment" "custom-attachment-elb" {
+/* resource "aws_autoscaling_attachment" "custom-attachment-elb" {
   autoscaling_group_name = aws_autoscaling_group.custom-group-autoscaling.id
   lb_target_group_arn = aws_lb_target_group.app1.arn
-}
+} */
 
 
 
-#autoscaling config policy
+/* #autoscaling config policy
 resource "aws_autoscaling_policy" "custom-policy" {
   name                   = "custom-policy"
   scaling_adjustment     = 1
@@ -106,3 +103,4 @@ resource "aws_cloudwatch_metric_alarm" "custom-alarm-descale" {
   alarm_description = "This metric monitors ec2 cpu utilization"
   alarm_actions     = [aws_autoscaling_policy.custom-policy-descale.arn]
 }
+ */
