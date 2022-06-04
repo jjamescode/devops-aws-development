@@ -1,7 +1,7 @@
 variable "application_name" {
   type        = string
   description = "Application Name"
-  default     = "task1"
+  default     = "app1"
 }
 
 variable "application_env" {
@@ -38,4 +38,12 @@ variable "azs" {
 
 variable "bastion_key_name" {
   default = "unbun-key"
+}
+
+variable "prefix" {
+  default = "app1"
+}
+
+variable "contact" {
+  default = "emailgoeshere@email.com"
 }

@@ -12,3 +12,14 @@ terraform {
 provider "aws" {
   region = var.aws_region
 }
+
+
+locals {
+  prefix = "${var.prefix}-${terraform.workspace}"
+  common_tags = {
+    Environment = terraform.workspace
+    Project     = var.application_name
+    Owner       = var.contact
+    ManagedBy   = "Terraform"
+  }
+}
