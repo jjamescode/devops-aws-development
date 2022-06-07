@@ -63,6 +63,6 @@ resource "aws_security_group" "aws-private-sg" {
   }
 
   tags = {
-    Name = "aws-private-sg"
+    Name = "${var.application_env}-private-sg"
   }
 }

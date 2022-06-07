@@ -20,8 +20,7 @@ resource "aws_instance" "bastion" {
   ]
 
   tags = {
-    Name = "${var.application_name}-${var.application_env}-bastion"
-    Env  = var.application_env
+    Name = "${var.application_env}-bastion"
   }
 
   depends_on = [
@@ -60,6 +59,6 @@ resource "aws_security_group" "aws-web-sg" {
 */
 
   tags = {
-    Name = "${var.application_name}-aws-web-sg"
+    Name = "${var.application_env}-pub-sg"
   }
 }

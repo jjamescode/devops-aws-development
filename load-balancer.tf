@@ -9,7 +9,9 @@ resource "aws_lb" "app1" {
 
   security_groups = [aws_security_group.lb-sg.id]
 
-  tags = local.common_tags
+ tags = {
+    Name = "${var.application_env}-lb"
+  }
 
 }
 
@@ -72,12 +74,10 @@ resource "aws_security_group" "lb-sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = merge(
-    local.common_tags,
-    {
-      Name = "${local.prefix}-lb-sg"
-    },
-  )
+
+  tags = {
+    Name = "${var.application_env}-lg-sq"
+  }
 
 }
 
