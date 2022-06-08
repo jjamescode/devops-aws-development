@@ -9,7 +9,7 @@ resource "aws_lb" "app1" {
 
   security_groups = [aws_security_group.lb-sg.id]
 
- tags = {
+  tags = {
     Name = "${var.application_env}-lb"
   }
 

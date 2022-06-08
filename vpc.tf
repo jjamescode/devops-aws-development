@@ -11,7 +11,7 @@ resource "aws_vpc" "aws-vpc" {
 # Internet Gateway For Public Setup
 resource "aws_internet_gateway" "aws-igw" {
   vpc_id = aws_vpc.aws-vpc.id
-  tags = {  
+  tags = {
     Name = "${var.application_env}-igw"
   }
 }
