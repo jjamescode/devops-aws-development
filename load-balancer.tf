@@ -9,7 +9,7 @@ resource "aws_lb" "app1" {
 
   security_groups = [aws_security_group.lb-sg.id]
 
- tags = {
+  tags = {
     Name = "${var.application_env}-lb"
   }
 
@@ -32,14 +32,6 @@ resource "aws_lb_target_group" "app1" {
     create_before_destroy = true
     ignore_changes        = [name]
   }
-}
-
-# App1 Target Group - Targets Register Instance      
-resource "aws_lb_target_group_attachment" "app1" {
-  count            = length(var.pub_web_subnets_cidr)
-  target_group_arn = aws_lb_target_group.app1.arn
-  target_id        = aws_instance.aws-private-ec2[count.index].id
-  port             = 80
 }
 
 #Listeners
