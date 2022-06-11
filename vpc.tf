@@ -11,8 +11,8 @@ resource "aws_vpc" "aws-vpc" {
 # Internet Gateway For Public Setup
 resource "aws_internet_gateway" "aws-igw" {
   vpc_id = aws_vpc.aws-vpc.id
-  tags = {
-    Name = "${var.application_name}-igw"
+  tags = {  
+    Name = "${var.application_env}-igw"
   }
 }
 
@@ -23,7 +23,7 @@ resource "aws_eip" "aws-web-eip" {
   count = length(var.pub_web_subnets_cidr)
 
   tags = {
-    Name = "${var.application_name}-web-eip-${count.index + 1}"
+    Name = "${var.application_env}-web-eip-${count.index + 1}"
   }
 }
 
@@ -35,7 +35,7 @@ resource "aws_nat_gateway" "aws-web-nat-gateway" {
   subnet_id     = aws_subnet.aws-public-subnet[count.index].id
   allocation_id = aws_eip.aws-web-eip[count.index].id
   tags = {
-    Name = "${var.application_name}-web-nat-gateway-${count.index + 1}"
+    Name = "${var.application_env}-web-nat-gateway-${count.index + 1}"
   }
 }
 
@@ -52,7 +52,7 @@ resource "aws_route_table" "aws-public-route-table" {
   }
 
   tags = {
-    Name = "${var.application_name}-public-route-table-${count.index + 1}"
+    Name = "${var.application_env}-public-route-table-${count.index + 1}"
   }
 }
 
@@ -75,11 +75,11 @@ resource "aws_route_table" "aws-private-route-table" {
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_nat_gateway.aws-web-nat-gateway[count.index].id
+    nat_gateway_id = aws_nat_gateway.aws-web-nat-gateway[count.index].id
   }
 
   tags = {
-    Name = "${var.application_name}-private-route-table-${count.index + 1}"
+    Name = "${var.application_env}-private-route-table-${count.index + 1}"
   }
 }
 
@@ -102,7 +102,7 @@ resource "aws_subnet" "aws-public-subnet" {
   availability_zone       = element(var.azs, count.index)
   map_public_ip_on_launch = true
   tags = {
-    Name = "${var.application_name}-public-subnet-${count.index + 1}"
+    Name = "${var.application_env}-public-subnet-${count.index + 1}"
   }
 }
 
@@ -116,6 +116,6 @@ resource "aws_subnet" "aws-private-subnet" {
   availability_zone       = element(var.azs, count.index)
   map_public_ip_on_launch = false
   tags = {
-    Name = "${var.application_name}-private-subnet-${count.index + 1}"
+    Name = "${var.application_env}-private-subnet-${count.index + 1}"
   }
 }
