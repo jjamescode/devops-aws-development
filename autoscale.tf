@@ -5,6 +5,8 @@ resource "aws_launch_configuration" "custom-launch-config" {
   instance_type   = "t2.micro"
   key_name        = var.bastion_key_name
   security_groups = [aws_security_group.aws-private-sg.id]
+  aws_iam_instance_profile  = aws_iam_instance_profile.app1-s3-profile.name
+
   user_data       = file("script.sh")
 }
 
