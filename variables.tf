@@ -1,3 +1,4 @@
+#local 
 variable "application_name" {
   type        = string
   description = "Application Name"
@@ -10,6 +11,7 @@ variable "application_env" {
   default     = "dev"
 }
 
+
 variable "aws_region" {
   default = "us-east-1"
 }
@@ -17,6 +19,7 @@ variable "aws_region" {
 #data "aws_availability_zones" "available" {}
 #aws_avail_zones="${slice(data.aws_availability_zones.available.names,0,2)}"
 
+#----Networking -----
 variable "vpc_cidr" {
   default = "172.20.0.0/20"
 }
@@ -30,6 +33,8 @@ variable "priv_app_subnets_cidr" {
   type    = list(any)
   default = ["172.20.3.0/24", "172.20.4.0/24"]
 }
+
+#----Networking -----
 
 variable "azs" {
   type    = list(any)
