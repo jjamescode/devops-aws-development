@@ -13,13 +13,14 @@ resource "aws_security_group" "aws-private-sg" {
   description = "Access for inbound"
   name        = "aws-private-sg"
   vpc_id      = aws_vpc.aws-vpc.id
-
+  /* 
+#Not Needed Due to SMM
   ingress {
     protocol    = "tcp"
     from_port   = 22
     to_port     = 22
     cidr_blocks = [var.vpc_cidr]
-  }
+  } */
 
   ingress {
     protocol        = "tcp"

@@ -1,4 +1,5 @@
-# retrieves data for image used to create server
+#Bastion Server
+/* # retrieves data for image used to create server
 data "aws_ami" "amazon_linux" {
   most_recent = true
   filter {
@@ -26,7 +27,7 @@ resource "aws_instance" "bastion" {
   depends_on = [
     aws_nat_gateway.aws-web-nat-gateway
   ]
-}
+} */
 
 # Public Security Group
 resource "aws_security_group" "aws-web-sg" {
@@ -34,29 +35,20 @@ resource "aws_security_group" "aws-web-sg" {
   name        = "aws-web-sg"
   vpc_id      = aws_vpc.aws-vpc.id
 
-  ingress {
+  #Not needed Due to SMM
+  /*   ingress {
     protocol    = "tcp"
     from_port   = 22
     to_port     = 22
     cidr_blocks = ["0.0.0.0/0"]
   }
-
+ */
   egress {
     protocol    = "-1"
     from_port   = 0
     to_port     = 0
     cidr_blocks = ["0.0.0.0/0"]
   }
-
-  /* ingress { 
-    protocol    = "-1"
-    from_port   = 0
-    to_port     = 0
-    cidr_blocks = ["0.0.0.0/0"]
-    #security_group_id = sgr-03f6c72a0990d1fad
-    #security_group_id = sg-08a3f3b1deda230c2 / app1-lb-sg
-  }
-*/
 
   tags = {
     Name = "${var.application_env}-pub-sg"
