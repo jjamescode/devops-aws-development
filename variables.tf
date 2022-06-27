@@ -35,10 +35,10 @@ variable "azs" {
   type    = list(any)
   default = ["us-east-1a", "us-east-1b"]
 }
-
+/* #No Needed SMM
 variable "bastion_key_name" {
   default = "unbun-key"
-}
+} */
 
 variable "prefix" {
   default = "app1"
